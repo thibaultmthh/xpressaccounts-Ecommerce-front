@@ -1,0 +1,48 @@
+
+#login {
+    
+    margin: auto;
+    width: 35%;
+    background-color: #EEF8E5;
+    height: 35%;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #2ECB09;
+}
+
+
+#login > input {
+    border-radius: 8px;
+    border: 0px solid black;
+    height: 35px;
+
+}
+
+#login > input[type="text"]{
+    height: 35px;
+    margin: 5px;
+}
+
+#login>input[type="text"]::placeholder{
+    color: black;
+    font-size: 1.1em;
+    padding-left: 8px;
+}
+
+#login>input[type="submit"] {
+    margin: auto;
+    margin-top: 10px;
+    border-radius: 16px;
+
+    font-size: 1em;
+    background-color: #13AA13;
+    color: white;
+    width: 50%;
+}
+
+#login > p {
+    font-size: 0.8em;
+}

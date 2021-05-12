@@ -1,0 +1,26 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-bottom: 3px solid #2ecb09;
+}
+
+header > img {
+  margin: 3px;
+  width: 65px;
+  height: 60px;
+  cursor: pointer;
+}
+
+header > div {
+  display: flex;
+  justify-content: space-around;
+  width: 35%;
+}
+
+header > div > a {
+  margin: auto;
+  text-decoration: none;
+  font-size: 1.1em;
+  color: white;
+}

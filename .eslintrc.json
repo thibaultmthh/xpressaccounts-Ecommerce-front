@@ -33,7 +33,9 @@
                 "tsx": "never"
             }
         ],
-        "quotes": "off"
+        "quotes": "off",
+        "indent": "off",
+        "max-len": "off"
     },
     "settings": {
         "import/resolver": {

@@ -1,0 +1,51 @@
+.login {
+  margin: auto;
+  width: 35%;
+  background-color: #eef8e5;
+  height: 35%;
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #2ecb09;
+}
+
+.login > input {
+  border-radius: 8px;
+  border: 0px solid black;
+  height: 35px;
+}
+
+.login > input[type="text"],
+.login > input[type="password"] {
+  height: 35px;
+  margin: 5px;
+  padding-left: 10px;
+  color: black;
+}
+
+.login > input[type="text"]::placeholder,
+.login > input[type="password"]::placeholder {
+  color: black;
+  font-size: 1.1em;
+}
+
+.login > input[type="submit"] {
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 1em;
+  background-color: #13aa13;
+  color: white;
+  width: 50%;
+}
+
+.login > p {
+  font-size: 0.8em;
+}
+
+.login > .errMessage {
+  color: red;
+}
