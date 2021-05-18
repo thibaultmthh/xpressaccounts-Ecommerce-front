@@ -1,0 +1,29 @@
+body {
+  background-color: #222a3c;
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica;
+  height: 100%;
+}
+#dashboard {
+  display: flex;
+}
+#dashboard > .cont {
+  background-color: #e9f1eb;
+  border-radius: 20px;
+  width: 45%;
+  margin: 3%;
+  padding: 10px;
+  max-height: 550px;
+  overflow: auto;
+}
+
+#pastOrders > .pastOrder {
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  flex-wrap: wrap;
+}

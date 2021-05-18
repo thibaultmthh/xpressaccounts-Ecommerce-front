@@ -28,8 +28,8 @@ export default function Header(props: IProps) {
         src={logo}
         alt="logo"
         onClick={() => {
-        history.push("/");
-      }}
+          history.push("/");
+        }}
       />
       <div>
         {user !== null ? (

@@ -27,7 +27,7 @@ export default function Login() {
         type="submit"
         onClick={() => {
           loginfb(email, password, setErrMessage);
-      }}
+        }}
       />
       <p>
         <a href="signup">Create an account</a>

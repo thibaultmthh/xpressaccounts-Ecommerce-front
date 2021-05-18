@@ -34,7 +34,6 @@
             }
         ],
         "quotes": "off",
-        "indent": "off",
         "max-len": "off"
     },
     "settings": {

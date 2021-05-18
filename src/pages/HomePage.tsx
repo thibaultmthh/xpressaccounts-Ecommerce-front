@@ -11,6 +11,7 @@ export default function HomePage(props:{user: firebaseNP.User | null}) {
     <>
       <Header user={user} />
       <div id="home">
+
         <h1>Xpress accounts</h1>
         <h2>
           Xpress accounts Your Way to Success

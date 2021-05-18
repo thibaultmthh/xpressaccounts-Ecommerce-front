@@ -4,6 +4,8 @@ import firebaseNP from "firebase";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
+import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import "./css/base.css";
 import initFirebase from "./firebaseInit";
 import ProductsPage from './pages/ProductsPage';
@@ -23,33 +25,39 @@ export default class App extends React.Component<{}, {user: firebaseNP.User | nu
   }
 
     componentDidMount = () => {
-    auth.onAuthStateChanged((user) => {
-      this.setState({ user });
-    });
-  };
+      auth.onAuthStateChanged((user) => {
+        this.setState({ user });
+      });
+    };
 
-  render() {
-    const { user } = this.state;
-    console.log(user);
+    render() {
+      const { user } = this.state;
+      return (
+        <Switch>
+          <Route exact path="/"><HomePage user={user} /></Route>
+          <Route
+            path="/login"
+          >
+            <LoginPage user={user} />
+          </Route>
+          <Route
+            path="/signup"
+          >
+            <SignupPage user={user} />
+          </Route>
+          <Route path="/products">
+            <ProductsPage user={user} />
+          </Route>
+          <Route path="/dashboard">
+            {user ? <Dashboard user={user} /> : <HomePage user={user} />}
 
-  return (
-    <Switch>
-      <Route exact path="/"><HomePage user={user} /></Route>
-      <Route
-        path="/login"
-      >
-        <LoginPage user={user} />
-      </Route>
-      <Route
-        path="/signup"
-      >
-        <SignupPage user={user} />
-      </Route>
-      <Route path="/products">
-        <ProductsPage user={user} />
-      </Route>
+          </Route>
+          <Route path="/admin">
+            <Admin />
 
-    </Switch>
-  );
-}
+          </Route>
+
+        </Switch>
+      );
+    }
 }
