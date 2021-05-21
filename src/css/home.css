@@ -17,6 +17,7 @@
 
 #home > h2 {
   margin-top: 60px;
+  width: 50%;
 }
 
 #home > a {
@@ -27,3 +28,5 @@
   width: 200px;
   text-decoration: none;
 }
+
+

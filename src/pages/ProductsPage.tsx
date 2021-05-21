@@ -1,7 +1,7 @@
 import React from "react";
 
 import firebaseNP from "firebase";
-import { Button } from "@blueprintjs/core";
+
 import Header from "../components/Header";
 import Product from "../components/Product";
 import "../css/productList.css";
@@ -13,14 +13,17 @@ import Checkout from "../components/Checkout";
 const firebase = initFirebase();
 const firestore = firebase.firestore();
 
-export default class ProductsPage extends React.Component<{user: firebaseNP.User | null}, {productList: IProduct[], product: {id: string, qty: number}}> {
+export default class ProductsPage extends React.Component<{user: firebaseNP.User | null}, {productList: IProduct[], productListId: string[], product: {id: string, qty: number, cost: number, name:string}}> {
   constructor(props:{user: firebaseNP.User | null}) {
     super(props);
     this.state = {
       productList: [],
+      productListId: [],
       product: {
         id: "",
         qty: 0,
+        cost: 0,
+        name: "",
       },
     };
   }
@@ -29,22 +32,46 @@ export default class ProductsPage extends React.Component<{user: firebaseNP.User
     const productRef = firestore.collection("products");
     const snapshot = await productRef.where("disabled", "==", false).where("stock", ">", 0).get();
     const productList : IProduct[] = [];
+    const productListId : string[] = [];
     snapshot.forEach((doc) => {
       productList.push(doc.data() as IProduct);
+      productListId.push(doc.id);
     });
-    this.setState({ productList });
+    this.setState({ productList, productListId });
   }
 
   render() {
-    const { productList, product } = this.state;
+    const { productList, product, productListId } = this.state;
     const { user } = this.props;
     return (
       <div>
-        {product.id ? <Checkout product={product} onClose={() => { this.setState({ product: { id: "", qty: 0 } }); }} /> : null}
+        {product.id ? (
+          <Checkout
+            product={product}
+            onClose={() => {
+              this.setState({
+                product: {
+                  id: "", qty: 0, cost: 0, name: "",
+                },
+              });
+            }}
+          />
+        ) : null}
         <Header user={user} />
-        <Button onClick={() => { this.setState({ product: { id: "okk", qty: 1 } }); }}>okkk</Button>
+
         <div id="productList">
-          {productList.map((p) => <Product product={p} />)}
+          {productList.map((p, i) => (
+            <Product
+              product={p}
+              productId={productListId[i]}
+              newCheckout={(data: {id: string, qty: number, cost: number, name:string}) => {
+                //
+                this.setState({
+                  product: data,
+                });
+              }}
+            />
+          ))}
 
         </div>
       </div>

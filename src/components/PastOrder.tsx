@@ -16,7 +16,10 @@ export default function PastOrder(props: { order: IOrder, onClick: ()=>void }) {
       <p className="title">{order.productName}</p>
       <p className="date">{toDate(order.date.seconds)}</p>
       <p className="qty">{order.quantity}</p>
-      <p className="orderNB">#5032</p>
+      <p className="orderNB">
+        #
+        {order.orderId}
+      </p>
       <p className="status">{order.fulfilled ? "Delivered" : "Pending"}</p>
     </div>
   );

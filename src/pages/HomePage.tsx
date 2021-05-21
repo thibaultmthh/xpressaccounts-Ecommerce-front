@@ -12,9 +12,10 @@ export default function HomePage(props:{user: firebaseNP.User | null}) {
       <Header user={user} />
       <div id="home">
 
-        <h1>Xpress accounts</h1>
+        <h1>The Xpress Way</h1>
         <h2>
-          Xpress accounts Your Way to Success
+          Xpress Accounts has shown time after time consistency and proven success. With so many options available your fingertips there is no reason to pay for overpriced accounts
+
         </h2>
         <Link to="products">Browse Products</Link>
       </div>

@@ -7,7 +7,7 @@ import React from "react";
 import firebaseNP from "firebase";
 import "../css/header.css";
 import { Link, useHistory } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/logogif.gif";
 
 import initFirebase from "../firebaseInit";
 

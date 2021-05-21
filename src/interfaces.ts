@@ -9,6 +9,7 @@ export interface IOrder {
   quantity: number;
   uid: string;
   orderNb: number
+  orderId: number
 }
 
 export type IPrices = {

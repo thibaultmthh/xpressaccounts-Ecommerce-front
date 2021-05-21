@@ -1,11 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from "react";
+import { Button } from "@blueprintjs/core";
+import React, { useState } from "react";
 import "../css/product.css";
 import { IProduct } from "../interfaces";
 
-export default function Product(props: {product: IProduct}) {
-  const { product } = props;
-  console.log(product.prices);
+interface IProps {
+  product: IProduct,
+  productId: string,
+  // eslint-disable-next-line no-unused-vars
+  newCheckout: (x: {id: string, qty: number, cost: number, name: string}) => void}
+
+export default function Product(props: IProps) {
+  const { product, newCheckout, productId } = props;
+  const [selected, setSelected] = useState("");
 
   return (
     <div className="product">
@@ -18,23 +25,44 @@ export default function Product(props: {product: IProduct}) {
       </p>
 
       <label htmlFor="quantity-select">Quantity : </label>
-      <select name="quantity" id="quantity-select">
+      <select
+        name="quantity"
+        id="quantity-select"
+        onChange={(e) => {
+          setSelected(e.target.value);
+        }}
+      >
         <option value="">Select Quantity</option>
-        {product.prices.map((price) => (
-
-          <option value={String(price.qty)}>
-            {price.qty}
-            {' '}
-            :
-            {' '}
-            {price.price}
-            $
-            {' '}
-          </option>
-        ))}
+        {product.prices.map((price) => {
+          if (price.qty > product.stock) { return null; }
+          return (
+            <option value={`${String(price.qty)}:${String(price.price)}`}>
+              {price.qty}
+              {' '}
+              :
+              {' '}
+              {price.price}
+              $
+              {' '}
+            </option>
+          );
+        })}
       </select>
       <br />
-      <a className="buttonV" href="order">Order now</a>
+      { /* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <Button
+        className="buttonV"
+        intent="success"
+        disabled={!selected}
+        onClick={() => {
+          newCheckout({
+            name: product.name, id: productId, qty: Number(selected.split(":")[0]), cost: Number(selected.split(":")[1]),
+          });
+        }}
+      >
+        Order now
+      </Button>
+
     </div>
   );
 }

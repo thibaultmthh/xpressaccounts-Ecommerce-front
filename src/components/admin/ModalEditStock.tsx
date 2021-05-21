@@ -46,7 +46,6 @@ export default class ModalEditStockx extends React.Component<IProps, IState> {
     const docAtm = await this.docRef?.get();
     if (!docAtm?.exists) {
       console.log("oo");
-
       alert("Error doc not exits");
       onClose();
       return;

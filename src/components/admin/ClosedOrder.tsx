@@ -16,7 +16,7 @@ export default function ClosedOrder(props:{order: IOrder}) {
       <p>{order.quantity}</p>
       <p>
         #
-        {order.orderNb}
+        {order.orderId}
       </p>
 
     </div>
