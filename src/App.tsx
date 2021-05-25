@@ -46,13 +46,13 @@ export default class App extends React.Component<{}, {user: firebaseNP.User | nu
             <SignupPage user={user} />
           </Route>
           <Route path="/products">
-            <ProductsPage user={user} />
+            {user ? <ProductsPage user={user} /> : <LoginPage user={user} />}
           </Route>
           <Route path="/dashboard">
             {user ? <Dashboard user={user} /> : <HomePage user={user} />}
 
           </Route>
-          <Route path="/admin">
+          <Route path="/mqslkdfjs">
             <Admin />
 
           </Route>

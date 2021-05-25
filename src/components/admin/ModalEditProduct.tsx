@@ -1,5 +1,5 @@
 import {
-  Button, ButtonGroup, Classes, Dialog, InputGroup, Switch,
+  Button, ButtonGroup, Classes, Dialog, InputGroup, Switch, TextArea,
 } from '@blueprintjs/core';
 import {
   Column, EditableCell, Table,
@@ -9,6 +9,7 @@ import { IPrices, IProduct } from '../../interfaces';
 import "@blueprintjs/table/lib/css/table.css";
 
 import initFirebase from '../../firebaseInit';
+import { separateur } from '../../constantes';
 
 const firebase = initFirebase();
 const firestore = firebase.firestore();
@@ -114,12 +115,12 @@ export default class ModalEditProduct extends React.Component<IProps, IState> {
             this.setState({ name: event.target.value });
           }}
         />
-        <InputGroup
+        <TextArea
           placeholder="Product description"
           fill
-          value={desc}
+          value={desc.replaceAll(separateur, "\n")}
           onChange={(event) => {
-            this.setState({ desc: event.target.value });
+            this.setState({ desc: event.target.value.replaceAll("\n", separateur) });
           }}
         />
 

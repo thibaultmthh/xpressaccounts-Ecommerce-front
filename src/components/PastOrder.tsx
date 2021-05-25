@@ -20,7 +20,7 @@ export default function PastOrder(props: { order: IOrder, onClick: ()=>void }) {
         #
         {order.orderId}
       </p>
-      <p className="status">{order.fulfilled ? "Delivered" : "Pending"}</p>
+      <p className="status" style={{ color: order.fulfilled ? "green" : "orange" }}>{order.fulfilled ? "Delivered" : "Pending"}</p>
     </div>
   );
 }

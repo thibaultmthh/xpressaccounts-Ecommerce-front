@@ -29,4 +29,18 @@
   text-decoration: none;
 }
 
+#home > .info {
+  display: flex;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 70%;
+}
 
+#home > .info > div {
+  margin: auto;
+  color: white;
+}
+
+#home > .info > .image {
+  margin: 40px;
+}

@@ -49,10 +49,12 @@ export default class Dashboard extends React.Component<IProps, IState> {
           <Delivery deliveryId={displayedDeliveryId} />
 
           <div id="pastOrders" className="cont">
-            {pastOrders.map((order) => (
+            {pastOrders.sort((a, b) => b.orderId - a.orderId).map((order) => (
               <PastOrder
                 order={order}
                 onClick={() => {
+                  console.log("clicked", order.deliveryId);
+
                   this.setState({ displayedDeliveryId: order.deliveryId });
                 }}
               />
