@@ -11,13 +11,18 @@ export default function AdminProduct(props:{product: IProduct, productId: string
   const {
     product, productId, refresh, editButton, editStockButton,
   } = props;
+  console.log(product);
+
   return (
     <div className="productAdmin">
       <p>{product.name }</p>
-      <p>
-        Stock :
-        {product.stock}
-      </p>
+      {product.instant
+        ? (
+          <p>
+            Stock :
+            {product.stock}
+          </p>
+        ) : null}
 
       {product.instant ? <Button intent="primary" onClick={editStockButton}>add stock</Button> : null}
       <Button intent="primary" onClick={editButton}>Edit</Button>

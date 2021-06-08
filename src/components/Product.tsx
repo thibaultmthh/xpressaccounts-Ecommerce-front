@@ -3,13 +3,13 @@ import { Button, Slider } from "@blueprintjs/core";
 import React, { useState } from "react";
 import { separateur } from "../constantes";
 import "../css/product.css";
-import { IPrices, IProduct } from "../interfaces";
+import { ICheckoutProduct, IPrices, IProduct } from "../interfaces";
 
 interface IProps {
   product: IProduct,
   productId: string,
   // eslint-disable-next-line no-unused-vars
-  newCheckout: (x: {id: string, qty: number, cost: number, name: string}) => void}
+  newCheckout: (x: ICheckoutProduct) => void}
 
 function getPrice(prices: IPrices, qty: number) {
   let pricePerOne = prices[0].price / prices[0].qty;
@@ -45,6 +45,12 @@ export default function Product(props: IProps) {
 
         ))}
       </p>
+      {product.instant ? (
+        <p>
+          Stock :
+          {product.stock}
+        </p>
+      ) : null}
       <p>
         {product.instant ? "Instant delivery" : "Delayed delivery"}
       </p>
@@ -74,7 +80,7 @@ export default function Product(props: IProps) {
           );
         })}
       </select>
-      {selected === "Custom" && product.stock > 25 ? <Slider min={25} max={product.stock} value={valueSlider} onChange={(v) => setValueSlider(v)} /> : null}
+      {selected === "Custom" && product.stock > 25 ? <Slider min={25} stepSize={1} labelStepSize={product.stock < 1000 ? product.stock / 10 : 100} max={product.stock < 1000 ? product.stock : 1000} value={valueSlider} onChange={(v) => setValueSlider(v)} /> : null}
       <br />
       { /* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <Button
@@ -84,19 +90,24 @@ export default function Product(props: IProps) {
         onClick={() => {
           if (selected !== "Custom") {
             newCheckout({
-              name: product.name, id: productId, qty: Number(selected.split(":")[0]), cost: Number(selected.split(":")[1]),
+              name: product.name, id: productId, qty: Number(selected.split(":")[0]), cost: Number(selected.split(":")[1]), needData: product.needData, dataRequest: product.dataRequest,
             });
           } else {
             newCheckout({
-              name: product.name, id: productId, qty: valueSlider, cost: getPrice(product.prices, valueSlider),
+              name: product.name, id: productId, qty: valueSlider, cost: getPrice(product.prices, valueSlider), needData: product.needData, dataRequest: product.dataRequest,
             });
           }
         }}
       >
         Order now
         {' '}
-        {selected === "Custom" ? getPrice(product.prices, valueSlider) : Number(selected.split(":")[1])}
-        $
+
+        {selected ? (
+          <>
+            {selected === "Custom" ? getPrice(product.prices, valueSlider) : Number(selected.split(":")[1])}
+            $
+          </>
+        ) : ""}
       </Button>
 
     </div>

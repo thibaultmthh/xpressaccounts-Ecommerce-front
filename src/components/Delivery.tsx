@@ -8,7 +8,7 @@ const firestore = firebase.firestore();
 
 export default function Delivery(props:{deliveryId: string}) {
   const { deliveryId } = props;
-  const [content, setContent] = useState("Loading");
+  const [content, setContent] = useState("Click a order to see its content");
   const [dId, setDId] = useState("");
 
   // eslint-disable-next-line no-unused-expressions
@@ -19,7 +19,7 @@ export default function Delivery(props:{deliveryId: string}) {
       if (!doc.exists) {
         setContent("Delivery not found....");
       } else {
-        setContent(doc.data()?.data || "Undefined");
+        setContent(doc.data()?.data || "Not filled yet");
         setDId(deliveryId);
       }
     }

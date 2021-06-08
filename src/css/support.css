@@ -1,0 +1,10 @@
+.support {
+  margin: auto;
+  background-color: rgba(220, 223, 224, 0.555);
+  border-radius: 20px;
+  height: 40%;
+  width: 60%;
+  padding: 20px;
+  font-size: 1.3em;
+  color: white;
+}

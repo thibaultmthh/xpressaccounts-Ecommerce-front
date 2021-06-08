@@ -1,0 +1,9 @@
+.coupon {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.coupon > p {
+  margin: auto;
+}

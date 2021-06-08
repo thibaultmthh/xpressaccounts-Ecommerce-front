@@ -6,14 +6,14 @@ import Header from "../components/Header";
 import Product from "../components/Product";
 import "../css/productList.css";
 import initFirebase from '../firebaseInit';
-import { IProduct } from "../interfaces";
+import { IProduct, ICheckoutProduct } from "../interfaces";
 import Checkout from "../components/Checkout";
 // eslint-disable-next-line camelcase
 
 const firebase = initFirebase();
 const firestore = firebase.firestore();
 
-export default class ProductsPage extends React.Component<{user: firebaseNP.User | null}, {productList: IProduct[], productListId: string[], product: {id: string, qty: number, cost: number, name:string}}> {
+export default class ProductsPage extends React.Component<{user: firebaseNP.User | null}, {productList: IProduct[], productListId: string[], product: ICheckoutProduct}> {
   constructor(props:{user: firebaseNP.User | null}) {
     super(props);
     this.state = {
@@ -24,6 +24,8 @@ export default class ProductsPage extends React.Component<{user: firebaseNP.User
         qty: 0,
         cost: 0,
         name: "",
+        needData: false,
+        dataRequest: "",
       },
     };
   }
@@ -51,7 +53,12 @@ export default class ProductsPage extends React.Component<{user: firebaseNP.User
             onClose={() => {
               this.setState({
                 product: {
-                  id: "", qty: 0, cost: 0, name: "",
+                  id: "",
+                  qty: 0,
+                  cost: 0,
+                  name: "",
+                  needData: false,
+                  dataRequest: "",
                 },
               });
             }}
@@ -64,7 +71,7 @@ export default class ProductsPage extends React.Component<{user: firebaseNP.User
             <Product
               product={p}
               productId={productListId[i]}
-              newCheckout={(data: {id: string, qty: number, cost: number, name:string}) => {
+              newCheckout={(data: ICheckoutProduct) => {
                 //
                 this.setState({
                   product: data,

@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
+import Support from "./pages/Support";
 import Admin from "./pages/Admin";
 import "./css/base.css";
 import initFirebase from "./firebaseInit";
@@ -51,6 +52,10 @@ export default class App extends React.Component<{}, {user: firebaseNP.User | nu
           <Route path="/dashboard">
             {user ? <Dashboard user={user} /> : <HomePage user={user} />}
 
+          </Route>
+
+          <Route path="/support">
+            <Support user={user} />
           </Route>
           <Route path="/mqslkdfjs">
             <Admin />

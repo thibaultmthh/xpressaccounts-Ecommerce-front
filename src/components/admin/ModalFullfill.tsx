@@ -27,6 +27,12 @@ export default function ModalFullfill(props:{order: IOrder, onClose: ()=>void, o
         /
         {order.quantity}
       </h2>
+      {order.dataRequested ? (
+        <p>
+          Data from user :
+          {order.dataRequested}
+        </p>
+      ) : null}
       <TextArea onChange={(e) => {
         setDeliverySize(e.target.value.split("\n").length);
         setDeliveryText(e.target.value);
@@ -45,6 +51,15 @@ export default function ModalFullfill(props:{order: IOrder, onClose: ()=>void, o
               firestore.collection("deliveries").doc(deliveryId).update({ data: deliveryText.replaceAll("\n", separateur) });
               firestore.collection("orders").doc(orderId).update({ fulfilled: true });
               onClose();
+              console.log(order.email);
+
+              firestore.collection("mail").add({
+                to: order.email,
+                message: {
+                  subject: "Your xpress account's order have been fulfilled",
+                  text: "Your Xpress Accounts order has been fulfilled. Please head to https://xpressaccounts.org/dashboard to get your accounts.",
+                },
+              });
             }}
           >
             Fullfill and send email

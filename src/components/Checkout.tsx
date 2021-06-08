@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "../css/checkout.css";
-import { Button, Overlay } from "@blueprintjs/core";
+import { Button, InputGroup, Overlay } from "@blueprintjs/core";
 import { Stripe } from "@stripe/stripe-js";
 import initFirebase from '../firebaseInit';
+import { ICheckoutProduct } from "../interfaces";
 
 // eslint-disable-next-line camelcase
 
@@ -40,17 +41,18 @@ async function handleServerResponse(stripe: Stripe, d: {setLoading: React.Dispat
 }
 
 export default function Checkout(props: {
-  product: {
-    id: string;
-    qty: number;
-    cost:number;
-    name: string
-  };
+  product: ICheckoutProduct;
   onClose: ()=>void
 }) {
   const { product, onClose } = props;
+  console.log(product);
+
+  const [productD, setProductD] = useState(JSON.parse(JSON.stringify(product)) as ICheckoutProduct);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [coupon, setCoupon] = useState("");
+
+  const [couponSet, setCouponSet] = useState(false);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -62,9 +64,9 @@ export default function Checkout(props: {
           <h3>
             You are going to buy
             {' '}
-            {product.qty}
+            {productD.qty}
             {' '}
-            {product.name}
+            {productD.name}
           </h3>
 
           <CardElement
@@ -84,6 +86,45 @@ export default function Checkout(props: {
 
             }}
           />
+          <br />
+          <InputGroup
+            placeholder="coupon"
+            value={coupon}
+            onChange={(v) => setCoupon(v.target.value)}
+            disabled={couponSet}
+            rightElement={(
+              <Button
+                intent="primary"
+                disabled={couponSet}
+                onClick={async () => {
+                  const newPrice = await functions.httpsCallable("checkCoupon")({ coupon, price: product.cost });
+                  if (newPrice.data.status !== "ok") {
+                    alert(newPrice.data.status);
+                    return;
+                  }
+                  const newProduct = productD;
+                  newProduct.cost = newPrice.data.newPrice;
+                  newProduct.coupon = coupon;
+                  setProductD(newProduct);
+                  if (product.cost !== newPrice.data.newPrice) {
+                    setCouponSet(true);
+                  }
+                }}
+              >
+                Apply
+              </Button>
+)}
+          />
+          {product.needData ? (
+            <InputGroup
+              placeholder={product.dataRequest}
+              onChange={(v) => {
+                const newProduct = productD;
+                newProduct.dataRequested = v.target.value;
+                setProductD(newProduct);
+              }}
+            />
+          ) : null}
           <br />
           <Button
             intent="success"
@@ -118,17 +159,17 @@ export default function Checkout(props: {
                 setLoading(false);
               } else {
                 console.log(paymentMethod);
-                functions.httpsCallable("pay")({ payment_method_id: paymentMethod?.id, product }).then((response) => {
+                functions.httpsCallable("pay")({ payment_method_id: paymentMethod?.id, product: productD }).then((response) => {
                   setLoading(false);
                   if (response.data.success) {
                     setSuccess(true);
                   }
-                  handleServerResponse(stripe, { setLoading, product }, response.data);
+                  handleServerResponse(stripe, { setLoading, product: productD }, response.data);
                 });
               }
             }}
           >
-            {success ? "See your order in the dashboard" : `Pay ${product.cost}$`}
+            {success ? "See your order in the dashboard" : `Pay ${productD.cost}$`}
 
           </Button>
           <br />

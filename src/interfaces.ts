@@ -10,6 +10,8 @@ export interface IOrder {
   uid: string;
   orderNb: number
   orderId: number
+  email: string
+  dataRequested: string
 }
 
 export type IPrices = {
@@ -23,5 +25,25 @@ export interface IProduct {
     instant: boolean
     prices: IPrices
     disabled: boolean
+    needData: boolean
+    dataRequest: string
     stock: number
+    lockedStock: number
 }
+
+export interface ICoupon {
+  currentU: number,
+  maxU: number,
+  percentOff: number
+}
+
+export interface ICheckoutProduct {
+  id: string
+  qty: number
+  cost: number
+   name:string
+   coupon?: string
+    needData: boolean
+    dataRequest: string
+    dataRequested?: string
+  }

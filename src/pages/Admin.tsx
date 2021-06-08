@@ -1,11 +1,13 @@
 import React from "react";
 import { Button } from "@blueprintjs/core";
-import { IProduct, IOrder } from "../interfaces";
+import { IProduct, IOrder, ICoupon } from "../interfaces";
 import AdminProduct from "../components/admin/AdminProduct";
 import OpenOrder from "../components/admin/OpenOrder";
+import Coupon from "../components/admin/Coupon";
 import ClosedOrder from "../components/admin/ClosedOrder";
 import ModalEditProduct from "../components/admin/ModalEditProduct";
 import ModalEditStock from "../components/admin/ModalEditStock";
+import ModalNewCoupon from "../components/admin/ModalNewCoupon";
 
 import initFirebase from '../firebaseInit';
 
@@ -24,13 +26,16 @@ interface IState {
     newProductOpen: boolean
     newProductOpenMode: string
     editStockId: string
+    coupons: ICoupon[],
+    couponsId: string[],
+    newCouponOpen: boolean
 }
 
 export default class Admin extends React.Component<{}, IState> {
   constructor(props:{}) {
     super(props);
     this.state = {
-      productList: [], openOrders: [], endedOrders: [], newProductOpen: false, productIdList: [], openOrdersID: [], newProductOpenMode: "", editStockId: "",
+      productList: [], openOrders: [], endedOrders: [], newProductOpen: false, productIdList: [], openOrdersID: [], newProductOpenMode: "", editStockId: "", coupons: [], couponsId: [], newCouponOpen: false,
     };
     this.refreshLists = this.refreshLists.bind(this);
   }
@@ -70,12 +75,26 @@ export default class Admin extends React.Component<{}, IState> {
       });
       this.setState({ endedOrders });
     });
+
+    const couponsRef = firestore.collection("coupons");
+
+    couponsRef.get().then((snapshot) => {
+      const coupons: ICoupon[] = [];
+      const couponsId: string[] = [];
+      snapshot.forEach((doc) => {
+        coupons.push(doc.data() as ICoupon);
+        couponsId.push(doc.id);
+      });
+      console.log(coupons, "coupons", couponsId);
+      this.setState({ coupons, couponsId });
+    });
   }
 
   render() {
     const {
-      productList, openOrders, endedOrders, newProductOpen, productIdList, openOrdersID, newProductOpenMode, editStockId,
+      productList, openOrders, endedOrders, newProductOpen, productIdList, openOrdersID, newProductOpenMode, editStockId, coupons, couponsId, newCouponOpen,
     } = this.state;
+    console.log(couponsId);
 
     return (
       <div id="admin">
@@ -83,6 +102,7 @@ export default class Admin extends React.Component<{}, IState> {
 
         {editStockId ? <ModalEditStock onClose={() => { this.setState({ editStockId: "" }); this.refreshLists(); }} productId={editStockId} /> : "" }
 
+        {newCouponOpen ? <ModalNewCoupon onClose={() => { this.setState({ newCouponOpen: false }); this.refreshLists(); }} /> : null}
         <div id="products">
           <h2>Products : </h2>
           <Button intent="primary" onClick={() => { this.setState({ newProductOpen: !newProductOpen, newProductOpenMode: "add" }); }}>New product</Button>
@@ -117,6 +137,13 @@ export default class Admin extends React.Component<{}, IState> {
 
           <div className="adminList">
             {endedOrders.map((order) => <ClosedOrder order={order} />)}
+          </div>
+        </div>
+        <div id="coupons">
+          <h2>Coupons</h2>
+          <Button onClick={() => this.setState({ newCouponOpen: true })} intent="primary">Create a coupon</Button>
+          <div className="adminList">
+            {coupons.map((coupon, i) => <Coupon coupon={coupon} id={couponsId[i]} refresh={this.refreshLists} />)}
           </div>
         </div>
       </div>

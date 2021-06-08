@@ -34,6 +34,7 @@ export default function Header(props: IProps) {
       <div>
         {user !== null ? (
           <>
+            <Link to="support">Support</Link>
             <Link to="dashboard">Dashboard</Link>
 
             <a href="#">{user.email}</a>

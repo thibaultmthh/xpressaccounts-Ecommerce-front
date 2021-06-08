@@ -20,6 +20,8 @@ interface IState {
     desc: string
     prices: IPrices
     instant: boolean
+    needData: boolean,
+    dataRequest: string
 
 }
 
@@ -31,6 +33,8 @@ export default class ModalEditProduct extends React.Component<IProps, IState> {
       desc: "",
       prices: [{ qty: 2, price: 3 }, { qty: 5, price: 6 }],
       instant: true,
+      needData: false,
+      dataRequest: "",
 
     };
     this.confirmCellEdit = this.confirmCellEdit.bind(this);
@@ -45,10 +49,10 @@ export default class ModalEditProduct extends React.Component<IProps, IState> {
           console.log("wtf no found");
         } else {
           const {
-            name, desc, prices, instant,
+            name, desc, prices, instant, needData, dataRequest,
           } = doc.data() as IProduct;
           this.setState({
-            name, desc, prices, instant,
+            name, desc, prices, instant, needData, dataRequest,
           });
         }
       });
@@ -80,29 +84,40 @@ export default class ModalEditProduct extends React.Component<IProps, IState> {
     console.log("coucou");
 
     const {
-      name, desc, prices, instant,
+      name, desc, prices, instant, needData, dataRequest,
     } = this.state;
     const { mode, onClose } = this.props;
     if (mode === "add") {
+      console.log(instant);
+
       firestore.collection("products").add({
         name,
         desc,
         prices,
-        stock: 0,
+        stock: !instant ? 99999 : 0,
+        disabled: false,
         instant,
+        needData,
+        dataRequest,
+        lockedStock: 0,
       }).then(() => { onClose(); }).catch((e) => console.log(e));
     } else {
       firestore.collection("products").doc(mode).update({
-        name, desc, prices, instant,
+        name,
+        desc,
+        prices,
+        instant,
+        needData,
+        dataRequest,
       }).then(() => { onClose(); })
         .catch((e) => console.log(e));
     }
   }
 
   render() {
-    const { onClose } = this.props;
+    const { onClose, mode } = this.props;
     const {
-      name, desc, prices, instant,
+      name, desc, prices, instant, needData, dataRequest,
     } = this.state;
     return (
       <Dialog isOpen title="Edit products" onClose={onClose}>
@@ -124,8 +139,18 @@ export default class ModalEditProduct extends React.Component<IProps, IState> {
           }}
         />
 
-        <Switch checked={instant} label="instant delivery" onChange={() => { this.setState({ instant: !instant }); }} />
-
+        {mode === "add" ? <Switch checked={instant} label="instant delivery" onChange={() => { this.setState({ instant: !instant }); }} /> : null}
+        <Switch checked={needData} label="Need data from customer" onChange={() => { this.setState({ needData: !needData }); }} />
+        {needData ? (
+          <InputGroup
+            placeholder="Data question"
+            fill
+            value={dataRequest}
+            onChange={(event) => {
+              this.setState({ dataRequest: event.target.value });
+            }}
+          />
+        ) : null}
         <p>Set prices : </p>
 
         <Table numRows={prices.length}>
