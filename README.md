@@ -1,16 +1,14 @@
-#Full ecommerce website 
+# Full ecommerce website 
+
+Ecommerce website done from scratch for a client, not used anymore so I opensourced it. 
+Stripe integration, back office dashboard. 
+
+Sell nike account via an autoshop, the project was running on firebase ( project deleted now but IDs still there ) 
+
 
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-
-
-
-
-
-
-
 
 ## Available Scripts
 
